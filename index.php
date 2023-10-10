@@ -42,8 +42,7 @@ $hotels = [
 
 ?>
 
-<!-- Stampare tutti i nostri hotel con tutti i dati disponibili.
-Iniziate in modo graduale. Prima stampate in pagina i dati, senza preoccuparvi dello stile. Dopo aggiungete Bootstrap e mostrate le informazioni con una tabella.
+<!-- tabella
 Bonus:
  Aggiungere un form ad inizio pagina che tramite una richiesta GET permetta di filtrare gli hotel che hanno un parcheggio.
 Aggiungere un secondo campo al form che permetta di filtrare gli hotel per voto (es. inserisco 3 ed ottengo tutti gli hotel che hanno un voto di tre stelle o superiore)
@@ -61,19 +60,40 @@ NOTA: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es.
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
-<body>
-    <div class="container">
-        <ul>
-            <?php
-            foreach ($hotels as $hotel) : ?>
-                <li><?php echo $hotel['name'] ?></li>
-                <li><?php echo $hotel['description'] ?></li>
-                <li><?php echo $hotel['parking'] ?></li>
-                <li><?php echo $hotel['vote'] ?></li>
-                <li><?php echo $hotel['distance_to_center'] ?> km</li>
+<body class="bg-dark">
+    <div class="container my-3">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Parking</th>
+                        <th scope="col">Vote</th>
+                        <th scope="col">Distance to the center</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            <?php endforeach; ?>
-        </ul>
+                <?php foreach ($hotels as $key => $hotel) : ?>
+
+                    <?php if ($hotel['parking']) {
+                        $parking = 'si';
+                    } else {
+                        $parking = 'no';
+                    }
+                    ?>
+                    <tr>
+                        <td scope="row"><?php echo $hotel['name'] ?></td>
+                        <td><?php echo $hotel['description'] ?></td>
+                        <td><?php echo $parking ?></td>
+                        <td><?php echo $hotel['vote'] ?></td>
+                        <td><?php echo $hotel['distance_to_center'] ?> km</td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
