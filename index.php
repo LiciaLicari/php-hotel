@@ -40,6 +40,18 @@ $hotels = [
 
 ];
 //var_dump($_GET);
+// isset($_GET['parking']) ? 'checked'  '';
+
+var_dump($_GET);
+
+
+
+
+
+
+
+
+
 ?>
 
 
@@ -65,24 +77,27 @@ NOTA: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es.
         <div class="row my-3">
             <form class="d-flex gap-4 justify-content-center align-items-center" action="" method="GET">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="true" id="parking" name="parking" <?= isset($_GET['parking']) ? 'checked' : ''; ?>>
-                    <label class="form-check-label" for="parking">
+                    <input class="form-check-input" type="checkbox" value="true" id="parking" name="parking" <?= isset($_GET['parking']) && $_GET['parking'] ? 'checked' : ''; ?>>
+                    <label class="form-check-label text-white" for="parking">
                         Parcheggio
                     </label>
                 </div>
                 <div>
-                <div class="mb-3">
-                    <select class="form-select form-select-lg" name="vote" id="vote">
-                        <option value=""> <?= !isset($_GET['vote']) && $_GET['vote'] === '' ? 'selected' : ''; ?> Vote</option>
-                        <option value="1" <?= isset($_GET['vote']) && $_GET['vote'] === '1' ? 'selected' : ''; ?>>1</option>
-                        <option value="2" <?= isset($_GET['vote']) && $_GET['vote'] === '2' ? 'selected' : ''; ?>>2</option>
-                        <option value="3" <?= isset($_GET['vote']) && $_GET['vote'] === '3' ? 'selected' : ''; ?>>3</option>
-                        <option value="4" <?= isset($_GET['vote']) && $_GET['vote'] === '4' ? 'selected' : ''; ?>>4</option>
-                        <option value="5" <?= isset($_GET['vote']) && $_GET['vote'] === '5' ? 'selected' : ''; ?>>5</option>
-                    </select>
-                </div>
+                    <div class="mb-3">
+                        <select class="form-select form-select-lg" name="vote" id="vote">
+                            <option value="" <?= !isset($_GET['vote']) || $_GET['vote'] === '' ? 'selected' : ''; ?>>Filtra per Voto..</option>
+                            <option value="1" <?= isset($_GET['vote']) && $_GET['vote'] === '1' ? 'selected' : ''; ?>>1 Stella</option>
+                            <option value="2" <?= isset($_GET['vote']) && $_GET['vote'] === '2' ? 'selected' : ''; ?>>2 Stelle</option>
+                            <option value="3" <?= isset($_GET['vote']) && $_GET['vote'] === '3' ? 'selected' : ''; ?>>3 Stelle</option>
+                            <option value="4" <?= isset($_GET['vote']) && $_GET['vote'] === '4' ? 'selected' : ''; ?>>4 Stelle</option>
+                            <option value="5" <?= isset($_GET['vote']) && $_GET['vote'] === '5' ? 'selected' : ''; ?>>5 Stelle</option>
 
-            </div>
+
+
+                        </select>
+                    </div>
+
+                </div>
                 <button type="submit">Filtra</button>
             </form>
         </div>
@@ -112,19 +127,19 @@ NOTA: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es.
                             }
                             ?>
                             <tr>
-                            <?php if (isset($_GET['parking']) && $hotel['parking'] && ($_GET['vote']) <= $hotel['vote']) : ?>
-                                <td scope="row"><?php echo $hotel['name'] ?></td>
-                                <td><?php echo $hotel['description'] ?></td>
-                                <td><?php echo $parking ?></td>
-                                <td><?php echo $hotel['vote'] ?></td>
-                                <td><?php echo $hotel['distance_to_center'] ?> km</td>
-                                <?php elseif (!isset($_GET['parking']) && ($_GET['vote']) <= $hotel['vote']) : ?>
-                                <td><?php echo $hotel['name']; ?></td>
-                                <td><?php echo $hotel['description']; ?></td>
-                                <td><?php echo $parking; ?></td>
-                                <td><?php echo $hotel['vote']; ?></td>
-                                <td><?php echo $hotel['distance_to_center']; ?></td>
-                            <?php endif; ?>
+                                <?php if (isset($_GET['parking']) && $hotel['parking'] && ($_GET['vote']) <= $hotel['vote']) : ?>
+                                    <td scope="row"><?php echo $hotel['name'] ?></td>
+                                    <td><?php echo $hotel['description'] ?></td>
+                                    <td><?php echo $parking ?></td>
+                                    <td><?php echo $hotel['vote'] ?></td>
+                                    <td><?php echo $hotel['distance_to_center'] ?> km</td>
+                                <?php elseif (!isset($_GET['parking']) && isset($_GET['vote']) && ($_GET['vote']) <= $hotel['vote']) : ?>
+                                    <td><?php echo $hotel['name']; ?></td>
+                                    <td><?php echo $hotel['description']; ?></td>
+                                    <td><?php echo $parking; ?></td>
+                                    <td><?php echo $hotel['vote']; ?></td>
+                                    <td><?php echo $hotel['distance_to_center']; ?></td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
