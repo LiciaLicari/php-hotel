@@ -73,7 +73,7 @@ NOTA: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es.
                         <th scope="col">Distance to the center</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="table-group-divider">
 
                 <?php foreach ($hotels as $key => $hotel) : ?>
 
