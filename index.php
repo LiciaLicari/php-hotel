@@ -39,12 +39,12 @@ $hotels = [
     ],
 
 ];
-
+//var_dump($_GET);
 ?>
 
-<!-- tabella
-Bonus:
- Aggiungere un form ad inizio pagina che tramite una richiesta GET permetta di filtrare gli hotel che hanno un parcheggio.
+
+<!-- Bonus:
+Aggiungere un form ad inizio pagina che tramite una richiesta GET permetta di filtrare gli hotel che hanno un parcheggio.
 Aggiungere un secondo campo al form che permetta di filtrare gli hotel per voto (es. inserisco 3 ed ottengo tutti gli hotel che hanno un voto di tre stelle o superiore)
 NOTA: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es. ottenere una lista con hotel che dispongono di parcheggio e che hanno un voto di tre stelle o superiore) Se non viene specificato nessun filtro, visualizzare come in precedenza tutti gli hotel. -->
 
@@ -61,41 +61,81 @@ NOTA: deve essere possibile utilizzare entrambi i filtri contemporaneamente (es.
 </head>
 
 <body class="bg-dark">
-    <div class="container my-3">
-        <div class="table-responsive">
-            <table class="table table-dark table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Parking</th>
-                        <th scope="col">Vote</th>
-                        <th scope="col">Distance to the center</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
+    <div class="container my-5">
+        <div class="row my-3">
+            <form class="d-flex gap-4 justify-content-center align-items-center" action="" method="GET">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="true" id="parking" name="parking" <?= isset($_GET['parking']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label" for="parking">
+                        Parcheggio
+                    </label>
+                </div>
+                <div>
+                <div class="mb-3">
+                    <select class="form-select form-select-lg" name="vote" id="vote">
+                        <option value=""> <?= !isset($_GET['vote']) && $_GET['vote'] === '' ? 'selected' : ''; ?> Vote</option>
+                        <option value="1" <?= isset($_GET['vote']) && $_GET['vote'] === '1' ? 'selected' : ''; ?>>1</option>
+                        <option value="2" <?= isset($_GET['vote']) && $_GET['vote'] === '2' ? 'selected' : ''; ?>>2</option>
+                        <option value="3" <?= isset($_GET['vote']) && $_GET['vote'] === '3' ? 'selected' : ''; ?>>3</option>
+                        <option value="4" <?= isset($_GET['vote']) && $_GET['vote'] === '4' ? 'selected' : ''; ?>>4</option>
+                        <option value="5" <?= isset($_GET['vote']) && $_GET['vote'] === '5' ? 'selected' : ''; ?>>5</option>
+                    </select>
+                </div>
 
-                <?php foreach ($hotels as $key => $hotel) : ?>
-
-                    <?php if ($hotel['parking']) {
-                        $parking = 'si';
-                    } else {
-                        $parking = 'no';
-                    }
-                    ?>
-                    <tr>
-                        <td scope="row"><?php echo $hotel['name'] ?></td>
-                        <td><?php echo $hotel['description'] ?></td>
-                        <td><?php echo $parking ?></td>
-                        <td><?php echo $hotel['vote'] ?></td>
-                        <td><?php echo $hotel['distance_to_center'] ?> km</td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            </div>
+                <button type="submit">Filtra</button>
+            </form>
         </div>
 
+
+        <div class="row my-3">
+
+            <div class="table-responsive">
+                <table class="table table-dark table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Parking</th>
+                            <th scope="col">Vote</th>
+                            <th scope="col">Distance to the center</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+
+                        <?php foreach ($hotels as $key => $hotel) : ?>
+
+                            <?php if ($hotel['parking']) {
+                                $parking = 'si';
+                            } else {
+                                $parking = 'no';
+                            }
+                            ?>
+                            <tr>
+                            <?php if (isset($_GET['parking']) && $hotel['parking'] && ($_GET['vote']) <= $hotel['vote']) : ?>
+                                <td scope="row"><?php echo $hotel['name'] ?></td>
+                                <td><?php echo $hotel['description'] ?></td>
+                                <td><?php echo $parking ?></td>
+                                <td><?php echo $hotel['vote'] ?></td>
+                                <td><?php echo $hotel['distance_to_center'] ?> km</td>
+                                <?php elseif (!isset($_GET['parking']) && ($_GET['vote']) <= $hotel['vote']) : ?>
+                                <td><?php echo $hotel['name']; ?></td>
+                                <td><?php echo $hotel['description']; ?></td>
+                                <td><?php echo $parking; ?></td>
+                                <td><?php echo $hotel['vote']; ?></td>
+                                <td><?php echo $hotel['distance_to_center']; ?></td>
+                            <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table -->
+        </div>
+        <!-- /.row -->
+
     </div>
+    <!-- /.container -->
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
